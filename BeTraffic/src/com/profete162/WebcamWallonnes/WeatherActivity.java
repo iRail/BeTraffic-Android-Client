@@ -21,7 +21,6 @@ import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
-import com.profete162.WebcamWallonnes.TrafficActivity.SetTrafficTabs;
 import com.profete162.WebcamWallonnes.Weather.Weather;
 import com.profete162.WebcamWallonnes.adapter.TabsAdapter;
 import com.profete162.WebcamWallonnes.adapter.WeatherAdapter;

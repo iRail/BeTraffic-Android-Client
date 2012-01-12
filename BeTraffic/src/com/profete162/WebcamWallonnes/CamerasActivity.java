@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+
 import android.app.Dialog;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,8 +18,8 @@ import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,7 +42,7 @@ public class CamerasActivity extends FragmentActivity {
 		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		ActionBar.Tab tab1 = getSupportActionBar().newTab().setText("Alphabet");
-		ActionBar.Tab tab2 = getSupportActionBar().newTab().setText("RŽgions");
+		ActionBar.Tab tab2 = getSupportActionBar().newTab().setText("Rï¿½gions");
 		ActionBar.Tab tab3 = getSupportActionBar().newTab().setText("Distance");
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
