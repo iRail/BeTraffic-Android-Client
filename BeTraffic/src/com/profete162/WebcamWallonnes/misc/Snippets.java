@@ -18,19 +18,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
-
-import com.profete162.WebcamWallonnes.SortMap;
 
 public class Snippets {
-
-	public static void createImageMapReceiver(int picId, char cat,
-			ImageView image, SortMap context) {
-
-		String url = getUrlFromCat(picId, cat);
-		context.new ImageMapReceiver(url, context, image);
-
-	}
 
 	public static float getDistanceBetweenLocations(Location loc1, Location loc2) {
 		float[] results = { 999999999 };

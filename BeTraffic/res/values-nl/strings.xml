@@ -5,5 +5,7 @@
     <string name="lan">nl</string>
     <string name="txt_connection">Gelieve uw internetverbinding te controleren...</string>
     <string name="txt_location">GPS parameters</string>
+    <string name="api_key_prod">0K7Fau7cA-pYJQs_ettKSeY36klggcJ9isiC4pA</string>
+    <string name="api_key_debug">0K7Fau7cA-pYqOftHPiE2Z-kL15R-uk8aH2036g</string>
 
 </resources>

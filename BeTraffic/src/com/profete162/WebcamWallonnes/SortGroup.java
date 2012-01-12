@@ -17,6 +17,7 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -43,7 +44,7 @@ public class SortGroup extends FragmentActivity {
 		ImageView image = null;
 
 		private static String[] items = { "Ring sud de Bruxelles",
-			"Autoroutes autour de Liège","Mons", "Axe Charleroi - Liège",
+			"Autoroutes autour de Li√®ge","Mons", "Axe Charleroi - Li√®ge",
 			"Axe Bruxelles - Namur", "Charleroi Est", "Charleroi Ouest",
 			"Axe Namur - Arlon", "Anvers/Antwerpen", "Bruxelles/Brussels", 
 			"Ring Bruxelles/Brussels", "Gand/Gent", "Lummen" };
@@ -105,18 +106,14 @@ public class SortGroup extends FragmentActivity {
 
 			Dialog dialog = new Dialog(getActivity());
 			dialog.setContentView(R.layout.custom_dialog);
-
 			int picId = Integer.valueOf(webcamCursor.getString(webcamCursor
 					.getColumnIndex("_id")));
 			dialog.setTitle(webcamCursor.getString(webcamCursor
 					.getColumnIndex("City")));
-			
 			image = (ImageView) dialog.findViewById(R.id.image);
-			image.setImageResource(R.drawable.icon);
-			
-			 new DownloadPicTask().execute(Snippets.getUrlFromCat(picId, cat));
-
-
+			new DownloadPicTask().execute(Snippets.getUrlFromCat(picId, cat));
+			dialog.getWindow().getAttributes().width = LayoutParams.FILL_PARENT;
+			dialog.getWindow().getAttributes().height = LayoutParams.FILL_PARENT;
 			dialog.show();
 		}
 		

@@ -42,7 +42,7 @@ public class CamerasActivity extends FragmentActivity {
 		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		ActionBar.Tab tab1 = getSupportActionBar().newTab().setText("Alphabet");
-		ActionBar.Tab tab2 = getSupportActionBar().newTab().setText("R�gions");
+		ActionBar.Tab tab2 = getSupportActionBar().newTab().setText("Régions");
 		ActionBar.Tab tab3 = getSupportActionBar().newTab().setText("Distance");
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -192,6 +192,21 @@ public class CamerasActivity extends FragmentActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+
+	}
+	
+	public class ImageDisplayer implements Runnable {
+		public ImageView view;
+		public Bitmap bmp;
+
+		public ImageDisplayer(ImageView imageView, Bitmap bmp) {
+			this.view = imageView;
+			this.bmp = bmp;
+		}
+
+		public void run() {
+			view.setImageBitmap(bmp);
+		}
 
 	}
 

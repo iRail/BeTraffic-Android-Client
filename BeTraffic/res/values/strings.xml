@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">BeRoads</string>
-	
-	<string name="txt_connection">Please check your Internet connection.</string>
-	<string name="api_key_prod">0K7Fau7cA-pYJQs_ettKSeY36klggcJ9isiC4pA</string>
-	<string name="api_key_debug">0K7Fau7cA-pYqOftHPiE2Z-kL15R-uk8aH2036g</string>
-	
-	<string name="txt_location">If you cannot get GPS position, please enable it by
+
+    <string name="app_name">BeRoads</string>
+    <string name="txt_connection">Please check your Internet connection.</string>
+    <string name="api_key_prod">0K7Fau7cA-pYJQs_ettKSeY36klggcJ9isiC4pA</string>
+    <string name="api_key_debug">0K7Fau7cA-pYqOftHPiE2Z-kL15R-uk8aH2036g</string>
+    <string name="txt_location">If you cannot get GPS position, please enable it by
 		clicking here.</string>
-		<string name="lan">fr</string>
+    <string name="lan">fr</string>
+
 </resources>
