@@ -4,6 +4,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.google.android.maps.GeoPoint;
+import com.profete162.WebcamWallonnes.radar.Radar;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +18,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
+import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -31,7 +39,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	 */
 	public DataBaseHelper(Context context) {
 
-		super(context,DB_NAME_RADAR, null, 1);
+		super(context, DB_NAME_RADAR, null, 1);
 		this.myContext = context;
 	}
 
@@ -70,9 +78,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	public void forceCreateDataBase(Context context) throws IOException {
 
-		try{
+		try {
 			this.getReadableDatabase();
-			//this.getWritableDatabase();
+			// this.getWritableDatabase();
 			try {
 
 				copyDataBase(DB_NAME_WEBCAM);
@@ -84,16 +92,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 				e.printStackTrace();
 
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 
-			SQLiteDatabase mDatabase = SQLiteDatabase.openDatabase("/data/data/com.profete162.WebcamWallonnes/databases/"+DB_NAME_WEBCAM, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+			SQLiteDatabase mDatabase = SQLiteDatabase.openDatabase(
+					"/data/data/com.profete162.WebcamWallonnes/databases/"
+							+ DB_NAME_WEBCAM, null,
+					SQLiteDatabase.CREATE_IF_NECESSARY);
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-
 
 	}
 
@@ -126,7 +132,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 		}
 
-		if (checkDBWebcam != null&&checkDBRadar != null&&checkDBParking != null) {
+		if (checkDBWebcam != null && checkDBRadar != null
+				&& checkDBParking != null) {
 
 			checkDBWebcam.close();
 			checkDBRadar.close();
@@ -134,7 +141,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 		}
 
-		return  true;
+		return true;
 	}
 
 	/**
@@ -209,27 +216,86 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return myDataBase.query("webcam", new String[] { "_id", "City", "Lat",
 				"Lon", "Cat", "Type" }, null, null, null, null, "City");
 	}
+
 	public Cursor fetchAllWebcamByDistance(double GPS[]) {
 		return myDataBase.query("webcam", new String[] { "_id", "City", "Lat",
 				"Lon", "Cat", "Type" }, null, null, null, null, "City");
 	}
+
 	public Cursor fetchAllRadar() {
 		return myDataBase.query("radars", new String[] { "id", "name", "lat",
 				"lon", "speedLimit" }, null, null, null, null, null);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Radar> fetchAllRadarCloseTo(Location loc) {
+
+		Cursor cursor = myDataBase.query("radars", new String[] { "id", "name", "lat",
+				"lon", "speedLimit" }, null, null, null, null, null);
+		
+		List<Radar> radarList = new ArrayList<Radar>();
+
+		for (cursor.moveToFirst(); cursor.moveToNext(); cursor
+				.isAfterLast()) {
+			String strName = cursor.getString(cursor
+					.getColumnIndex("name"));
+			// m_ProgressDialog.incrementProgressBy(1);
+			double iLat = cursor.getDouble(cursor
+					.getColumnIndex("lat"));
+
+			double iLon = cursor.getDouble(cursor
+					.getColumnIndex("lon"));
+
+			String sAdress = cursor.getString(cursor
+					.getColumnIndex("speedLimit"));
+
+			double dDis = distance(loc.getLatitude(), loc.getLongitude(), iLat, iLon);
+
+			radarList.add(new Radar(strName, iLat, iLon, dDis + "",
+					sAdress, 0, cursor.getInt(cursor
+							.getColumnIndex("id"))));
+		}
+		Collections.sort(radarList);
+		
+		return radarList;
+
+
+
+		
+	}
+
 	public Cursor fetchAllParking() {
-		return myDataBase.query("covoiturage", new String[] { "id", "nom", "lat",
-				"lon", "localisation", "places" }, null, null, null, null, null);
+		return myDataBase.query("covoiturage", new String[] { "id", "nom",
+				"lat", "lon", "localisation", "places" }, null, null, null,
+				null, null);
 	}
 
 	public Cursor fetchAllWebcam(int group) {
 		return myDataBase.rawQuery("SELECT * FROM webcam WHERE Type='" + group
 				+ "'", null);
 	}
-	
+
 	public Cursor fetchWebcam(String name) {
 		return myDataBase.rawQuery("SELECT * FROM webcam WHERE City='" + name
 				+ "'", null);
+	}
+	
+	public static double distance(double sLat, double sLon, double eLat,
+			double eLon) {
+		double d2r = (Math.PI / 180);
+		try {
+			double dlong = (eLon - sLon) * d2r;
+			double dlat = (eLat - sLat) * d2r;
+			double a = Math.pow(Math.sin(dlat / 2.0), 2) + Math.cos(sLat * d2r)
+					* Math.cos(eLat * d2r) * Math.pow(Math.sin(dlong / 2.0), 2);
+			double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+			return 6367 * c * 1000;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

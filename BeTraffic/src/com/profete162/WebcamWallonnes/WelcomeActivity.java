@@ -170,7 +170,7 @@ public class WelcomeActivity extends FragmentActivity {
 	};
 
 	public void onMapClick(View v) {
-		Intent i = new Intent(this, MapActivity.class);
+		Intent i = new Intent(this, MyMapActivity.class);
 		startActivity(i);
 	}
 
