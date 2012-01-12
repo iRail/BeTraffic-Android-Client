@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
-import com.profete162.WebcamWallonnes.radar.Radar;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,7 +16,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
-import android.util.Log;
+
+import com.profete162.WebcamWallonnes.radar.Radar;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -94,7 +92,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			}
 		} catch (Exception e) {
 
-			SQLiteDatabase mDatabase = SQLiteDatabase.openDatabase(
+			SQLiteDatabase.openDatabase(
 					"/data/data/com.profete162.WebcamWallonnes/databases/"
 							+ DB_NAME_WEBCAM, null,
 					SQLiteDatabase.CREATE_IF_NECESSARY);

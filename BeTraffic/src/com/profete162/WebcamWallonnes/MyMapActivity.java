@@ -1,10 +1,10 @@
 package com.profete162.WebcamWallonnes;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.location.Location;
@@ -26,7 +26,10 @@ public class MyMapActivity extends FragmentMapActivity {
 	CustomizedLocationOverlay myLocationOverlay;
 	MapView mMap;
 	DataBaseHelper mDbHelper;
-
+	private ProgressDialog m_ProgressDialog;
+	Activity context;
+	RadarOverlay radarOverlay;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,6 +39,8 @@ public class MyMapActivity extends FragmentMapActivity {
 		mMap = (MapView) findViewById(R.id.myGmap);
 		mMap.setBuiltInZoomControls(true);
 		mMap.setSatellite(false);
+		
+		context=this;
 
 		mDbHelper = new DataBaseHelper(this);
 		try {
@@ -162,38 +167,67 @@ public class MyMapActivity extends FragmentMapActivity {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public void onLocationChanged(Location loc) {
+		public void onLocationChanged(final Location loc) {
 			super.onLocationChanged(loc);
 			if (!isFirst) {
+				m_ProgressDialog = new ProgressDialog(context);
+				m_ProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				m_ProgressDialog.setCancelable(false);
+				m_ProgressDialog.setMessage("Getting 50 closest Radars");
+				m_ProgressDialog.show();
 				isFirst = true;
-				RadarOverlay radarOverlay = new RadarOverlay();
-				mDbHelper.openDataBase(DataBaseHelper.DB_NAME_RADAR);
-				List<Radar> radarList = mDbHelper.fetchAllRadarCloseTo(loc);
-				// i est inutile, est il possible de prendre facilement les 50
-				// premiers éléments d'une liste???
-				int i = 0;
-				for (Radar aRadar : radarList) {
-					double lat = aRadar.getLat();
-					double lon = aRadar.getLon();
-					
-					GeoPoint gp = new GeoPoint((int) (lat * 1E6),
-							(int) (lon * 1E6));
-					radarOverlay.addPoint(gp);
-					i++;
-					if(i>50)
-						break;
-				}
-				
-				mDbHelper.close();
-				
-				mMap.getOverlays().add(radarOverlay);
-				mMap.getOverlays().add(myLocationOverlay);
-				
-				
-				
+				radarOverlay = new RadarOverlay();
+				Runnable get50ClosestRadarsRunnable = new Runnable() {
+					public void run() {
+						
+						mDbHelper.openDataBase(DataBaseHelper.DB_NAME_RADAR);
+						List<Radar> radarList = mDbHelper.fetchAllRadarCloseTo(loc);
+						
+						// i est inutile, est il possible de prendre facilement les 50
+						// premiers éléments d'une liste???
+						int i = 0;
+						for (Radar aRadar : radarList) {
+							m_ProgressDialog.setProgress(i);
+							
+							double lat = aRadar.getLat();
+							double lon = aRadar.getLon();
+							GeoPoint gp = new GeoPoint((int) (lat * 1E6),
+									(int) (lon * 1E6));
+							radarOverlay.addPoint(gp);
+							i++;
+							if(i>50)
+								break;
+						}
+						
+						mDbHelper.close();
+						context.runOnUiThread(addOverlays);
+					}
+				};
+				//context.runOnUiThread(get50ClosestRadarsRunnable);
+				Thread thread = new Thread(null, get50ClosestRadarsRunnable,
+						"get50ClosestRadarsRunnable");
+				thread.start();	
 			}
 		}
 
 	}
+	
+	private Runnable addOverlays = new Runnable() {
+		public void run() {
+
+			mMap.getOverlays().add(radarOverlay);
+			mMap.getOverlays().add(myLocationOverlay);
+			//Mais pourquoi l'overlay met il tant de temps à s'afficher????
+			//Le mettre à la suite dans un thread ne semble pas aider...
+			context.runOnUiThread(hideProgessDialog);
+
+		}
+	};
+	
+	private Runnable hideProgessDialog = new Runnable() {
+		public void run() {
+			m_ProgressDialog.dismiss();
+		}
+	};
 
 }
