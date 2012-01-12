@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,9 +39,10 @@ public class SortAlphabet extends FragmentActivity {
 		mContext = this;
 	}
 
-	public static class AppListFragment extends ListFragment  {
-		String url="";
-		ImageView image=null;
+	public static class AppListFragment extends ListFragment {
+		String url = "";
+		ImageView image = null;
+
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
@@ -104,49 +106,41 @@ public class SortAlphabet extends FragmentActivity {
 
 			Dialog dialog = new Dialog(getActivity());
 			dialog.setContentView(R.layout.custom_dialog);
-
 			int picId = Integer.valueOf(webcamCursor.getString(webcamCursor
 					.getColumnIndex("_id")));
 			dialog.setTitle(webcamCursor.getString(webcamCursor
 					.getColumnIndex("City")));
-			
 			image = (ImageView) dialog.findViewById(R.id.image);
-			image.setImageResource(R.drawable.icon);
-			
-			 new DownloadPicTask().execute(Snippets.getUrlFromCat(picId, cat));
-
-
+			new DownloadPicTask().execute(Snippets.getUrlFromCat(picId, cat));
+			dialog.getWindow().getAttributes().width = LayoutParams.FILL_PARENT;
+			dialog.getWindow().getAttributes().height = LayoutParams.FILL_PARENT;
 			dialog.show();
 		}
-		
-		 private class DownloadPicTask extends AsyncTask<String, Integer, Bitmap> {
-		     protected Bitmap doInBackground(String... url) {
-					Bitmap bm=null;
-					try {
-				        final URLConnection conn = new URL(url[0]).openConnection();
-				        conn.connect();
-				        final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-				        bm = BitmapFactory.decodeStream(bis);
-				        bis.close();
-				       
-				    } catch (IOException e) {
-				        Log.d("DEBUGTAG", "Oh noooz an error...");
-				    }
-				    return bm;
-		     }
 
+		private class DownloadPicTask extends
+				AsyncTask<String, Integer, Bitmap> {
+			protected Bitmap doInBackground(String... url) {
+				Bitmap bm = null;
+				try {
+					final URLConnection conn = new URL(url[0]).openConnection();
+					conn.connect();
+					final BufferedInputStream bis = new BufferedInputStream(
+							conn.getInputStream());
+					bm = BitmapFactory.decodeStream(bis);
+					bis.close();
 
-		     protected void onPostExecute(Bitmap result) {
-		    	 image.setImageBitmap(result);
-		     }
+				} catch (IOException e) {
+					Log.d("DEBUGTAG", "Oh noooz an error...");
+				}
+				return bm;
+			}
 
+			protected void onPostExecute(Bitmap result) {
+				image.setImageBitmap(result);
+			}
 
-		 }
-
-
+		}
 
 	}
-
-	
 
 }
