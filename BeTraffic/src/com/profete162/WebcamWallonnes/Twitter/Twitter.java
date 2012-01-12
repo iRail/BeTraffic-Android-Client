@@ -19,13 +19,13 @@ import com.profete162.WebcamWallonnes.misc.Snippets;
 public class Twitter {
 
 	
-	public static void getTweets(final Activity a, final ListView l) {
+	public static void getTweets(final TwitterFragment a, final ListView l) {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					String url = "http://search.twitter.com/search.json?q=BETRAINS";
 					SharedPreferences mDefaultPrefs = PreferenceManager
-							.getDefaultSharedPreferences(a);
+							.getDefaultSharedPreferences(a.getActivity());
 					;
 					if (mDefaultPrefs.getBoolean("mHarkor",true));
 						url += "%20OR%20harkor";
@@ -36,28 +36,29 @@ public class Twitter {
 					
 					
 					url += "&rpp=50";
-					InputStream is = Snippets.DownloadJsonFromUrl(url,a);
+					InputStream is = Snippets.DownloadJsonFromUrl(url,a.getActivity());
 					Gson gson = new Gson();
 					final Reader reader = new InputStreamReader(is);
 					final Tweets tweets = gson.fromJson(reader, Tweets.class);
 					Looper.prepare();
-					Toast.makeText(a, ""+tweets.results.size(), Toast.LENGTH_LONG).show();
+					Toast.makeText(a.getActivity(), ""+tweets.results.size(), Toast.LENGTH_LONG).show();
 					Log.i("","6");
-					a.runOnUiThread(new Thread(new Runnable() {
+					a.getActivity().runOnUiThread(new Thread(new Runnable() {
 						public void run() {
 							Log.i("","OK");
-							l.setAdapter(new TweetItemAdapter(a,
+							a.setListAdapter(new TweetItemAdapter(a.getActivity(),
 									R.layout.row_tweet, tweets.results));
+							
 							Log.i("","OK");
 						}
 					}));
 				} catch (Exception e) {
 					e.printStackTrace();
-					a.runOnUiThread(new Thread(new Runnable() {
+					a.getActivity().runOnUiThread(new Thread(new Runnable() {
 						public void run() {
 							//TextView tv = (TextView) a.findViewById(R.id.fail);
 							//tv.setVisibility(View.VISIBLE);
-							Toast.makeText(a, "No Tweets", Toast.LENGTH_LONG).show();
+							Toast.makeText(a.getActivity(), "No Tweets", Toast.LENGTH_LONG).show();
 
 						}
 					}));
