@@ -3,9 +3,10 @@ package com.profete162.WebcamWallonnes.Twitter;
 import java.io.File;
 import java.util.ArrayList;
 
-import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.widget.ImageView;
+
+import com.profete162.WebcamWallonnes.Twitter.Tweets.Tweet;
 
 
 public class TwitterFragment extends ListFragment {
@@ -13,17 +14,11 @@ public class TwitterFragment extends ListFragment {
 	ImageView image = null;
 	static ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		tweets = Twitter.getTweets(1,this, "android","Waza_be: BeTraffic ",
-				new ArrayList<String>(),this.getListView());
+		Twitter.getTweets(getActivity(), this.getListView());
 
 	}
 

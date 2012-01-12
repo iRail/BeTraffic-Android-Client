@@ -13,7 +13,7 @@ public class MapActivity extends FragmentMapActivity {
 
 	}
 
-	public static class WeeklyWeatherFragment extends ListFragment {
+	public static class MapFragment extends ListFragment {
 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
