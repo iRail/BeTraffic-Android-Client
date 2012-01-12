@@ -16,12 +16,15 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,12 +43,11 @@ public class WelcomeActivity extends FragmentActivity {
 
 	TextView tvLocation;
 	TextView tvAccuraty;
-	
-	
+
 	List<Address> addresses = null;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)  {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
 
@@ -67,13 +69,14 @@ public class WelcomeActivity extends FragmentActivity {
 				+ settings.getString("pVersion", "X") + "***");
 		if (!myVersion.equals(settings.getString("pVersion", "X"))) {
 			try {
-				 Toast.makeText(this, "Database Updated",
-				 Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Database Updated", Toast.LENGTH_SHORT)
+						.show();
 				myDbHelper.forceCreateDataBase(this);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				Toast.makeText(this, "Unable to create database", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Unable to create database",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 
@@ -103,23 +106,25 @@ public class WelcomeActivity extends FragmentActivity {
 		 */
 
 	}
-	
-	public void setWelcomeContent(){
+
+	public void setWelcomeContent() {
 		setContentView(R.layout.activity_welcome);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		
-		/*ViewPager mPager=(ViewPager) this.findViewById(R.id.pager);
-		MenuAdapter adapter= new MenuAdapter(this);
-		mPager.setAdapter(adapter);
-		
-		CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
-		indicator.setViewPager(mPager);
-		indicator.setSnap(true);*/
-		
+
+		/*
+		 * ViewPager mPager=(ViewPager) this.findViewById(R.id.pager);
+		 * MenuAdapter adapter= new MenuAdapter(this);
+		 * mPager.setAdapter(adapter);
+		 * 
+		 * CirclePageIndicator indicator =
+		 * (CirclePageIndicator)findViewById(R.id.indicator);
+		 * indicator.setViewPager(mPager); indicator.setSnap(true);
+		 */
+
 	}
 
 	public void displayLocation() {
-		
+
 		List<String> providers = locationManager.getProviders(true);
 		Location l = null;
 		for (int i = providers.size() - 1; i >= 0; i--) {
@@ -130,40 +135,40 @@ public class WelcomeActivity extends FragmentActivity {
 
 		lastLocation = l;
 		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-		
-		try {
-			addresses = geocoder.getFromLocation(lastLocation.getLatitude(), lastLocation
-					.getLongitude(), 1);
-			handler.sendEmptyMessage(0);
 
+		try {
+			addresses = geocoder.getFromLocation(lastLocation.getLatitude(),
+					lastLocation.getLongitude(), 1);
+			handler.sendEmptyMessage(0);
 
 		} catch (IOException e) {
 			handler.sendEmptyMessage(1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
 	private Handler handler = new Handler() {
 
 		public void handleMessage(android.os.Message msg) {
-			if(msg.what == 0) {
+			if (msg.what == 0) {
 
 				tvLocation.setText(addresses.get(0).getAddressLine(0) + ", "
 						+ addresses.get(0).getLocality());
-				tvAccuraty.setText("(" + (int) lastLocation.getAccuracy() + "m)");
+				tvAccuraty.setText("(" + (int) lastLocation.getAccuracy()
+						+ "m)");
 
-				}
-			if(msg.what == 1) {
+			}
+			if (msg.what == 1) {
 				String masque = new String("#0.##");
 				DecimalFormat form = new DecimalFormat(masque);
-				tvLocation.setText(form.format(lastLocation.getLatitude()) + ";"
-						+ form.format(lastLocation.getLongitude())+" @"+lastLocation.getAccuracy()+"m");
+				tvLocation.setText(form.format(lastLocation.getLatitude())
+						+ ";" + form.format(lastLocation.getLongitude()) + " @"
+						+ lastLocation.getAccuracy() + "m");
 				tvAccuraty.setText("(No Internet)");
 
-				}
-
+			}
 
 		};
 
@@ -207,21 +212,57 @@ public class WelcomeActivity extends FragmentActivity {
 	public void onAboutClick(View v) {
 
 		Dialog dialog = new Dialog(this);
-
 		dialog.setContentView(R.layout.about_dialog);
 		dialog.setTitle("About us");
 
+		LinearLayout profile1 = (LinearLayout) dialog
+				.findViewById(R.id.profile1);
+		profile1.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent profileIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://twitter.com/harkor"));
+				startActivity(profileIntent);
+
+			}
+		});
+
+		LinearLayout profile2 = (LinearLayout) dialog
+				.findViewById(R.id.profile2);
+		profile2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent profileIntent = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://twitter.com/QKaiser"));
+				startActivity(profileIntent);			}
+		});
+
+		LinearLayout profile3 = (LinearLayout) dialog
+				.findViewById(R.id.profile3);
+		profile3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent profileIntent = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("https://plus.google.com/117418174673875366560"));
+				startActivity(profileIntent);
+			}
+		});
+
+		dialog.getWindow().getAttributes().width = LayoutParams.FILL_PARENT;
 		dialog.show();
 	}
-	private void putBundle(Intent i){
-		try{
+
+	private void putBundle(Intent i) {
+		try {
 			Bundle bundle = new Bundle();
 			bundle.putDouble("lat", lastLocation.getLatitude());
 			bundle.putDouble("lng", lastLocation.getLongitude());
 			i.putExtras(bundle);
 			startActivity(i);
-		}catch(Exception e){
-			Toast.makeText(getBaseContext(), "Please wait for location", Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			Toast.makeText(getBaseContext(), "Please wait for location",
+					Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -235,7 +276,7 @@ public class WelcomeActivity extends FragmentActivity {
 			if (loc != null && lastLocation != null) {
 				// Toast.makeText(getBaseContext(), "GPS: "+loc.getAccuracy(),
 				// Toast.LENGTH_LONG).show();
-				
+
 				lastLocation = loc;
 				if (loc.getAccuracy() <= 25) {
 					new Thread(new Runnable() {
@@ -321,5 +362,4 @@ public class WelcomeActivity extends FragmentActivity {
 
 		locationManager = null;
 	}
-
 }
