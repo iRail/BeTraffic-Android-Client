@@ -44,35 +44,34 @@ public class SortGroup extends FragmentActivity {
 		ImageView image = null;
 
 		private static String[] items = { "Ring sud de Bruxelles",
-			"Autoroutes autour de Liège","Mons", "Axe Charleroi - Liège",
-			"Axe Bruxelles - Namur", "Charleroi Est", "Charleroi Ouest",
-			"Axe Namur - Arlon", "Anvers/Antwerpen", "Bruxelles/Brussels", 
-			"Ring Bruxelles/Brussels", "Gand/Gent", "Lummen" };
+				"Autoroutes autour de Liège", "Mons", "Axe Charleroi - Liège",
+				"Axe Bruxelles - Namur", "Charleroi Est", "Charleroi Ouest",
+				"Axe Namur - Arlon", "Anvers/Antwerpen", "Bruxelles/Brussels",
+				"Ring Bruxelles/Brussels", "Gand/Gent", "Lummen" };
 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-		
+
 			mDbHelper = new DataBaseHelper(getActivity());
 			mDbHelper.openDataBase(DataBaseHelper.DB_NAME_WEBCAM);
 			ArrayList<String> list;
-			for (int i = 0; i < items.length ; ++i) {
-				
+			for (int i = 0; i < items.length; ++i) {
+
 				list = new ArrayList<String>();
-				webcamCursor= mDbHelper.fetchAllWebcam(i+1);
-				for(webcamCursor.moveToFirst(); webcamCursor.moveToNext(); webcamCursor.isAfterLast()) {
-				    // The Cursor is now set to the right position
-				    list.add(webcamCursor.getString(webcamCursor
+				webcamCursor = mDbHelper.fetchAllWebcam(i + 1);
+				for (webcamCursor.moveToFirst(); webcamCursor.moveToNext(); webcamCursor
+						.isAfterLast()) {
+					// The Cursor is now set to the right position
+					list.add(webcamCursor.getString(webcamCursor
 							.getColumnIndex("City")));
 				}
-				
-				adapter.addSection(items[i],
-						new ArrayAdapter<String>(getActivity(),
-							android.R.layout.simple_list_item_1,
-							list));
+
+				adapter.addSection(items[i], new ArrayAdapter<String>(
+						getActivity(), android.R.layout.simple_list_item_1,
+						list));
 			}
 
-			
 			setListAdapter(adapter);
 		}
 
@@ -83,7 +82,8 @@ public class SortGroup extends FragmentActivity {
 				TextView result = (TextView) convertView;
 
 				if (convertView == null) {
-					result = (TextView) getActivity().getLayoutInflater().inflate(R.layout.header, null);
+					result = (TextView) getActivity().getLayoutInflater()
+							.inflate(R.layout.header, null);
 				}
 
 				result.setText(caption);
@@ -92,14 +92,15 @@ public class SortGroup extends FragmentActivity {
 			}
 
 		};
+
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
 			SectionedAdapter adapter = (SectionedAdapter) l.getAdapter();
-			String name=""+adapter.getItem(position);
-			webcamCursor=mDbHelper.fetchWebcam(name.replace("'","''"));
-			
-			
-			Log.i("FragmentComplexList", "Item clicked: " +adapter.getItem(position));
+			String name = "" + adapter.getItem(position);
+			webcamCursor = mDbHelper.fetchWebcam(name.replace("'", "''"));
+
+			Log.i("FragmentComplexList",
+					"Item clicked: " + adapter.getItem(position));
 			webcamCursor.moveToPosition(0);
 			char cat = webcamCursor.getString(
 					webcamCursor.getColumnIndex("Cat")).charAt(0);
@@ -116,34 +117,31 @@ public class SortGroup extends FragmentActivity {
 			dialog.getWindow().getAttributes().height = LayoutParams.FILL_PARENT;
 			dialog.show();
 		}
-		
-		 private class DownloadPicTask extends AsyncTask<String, Integer, Bitmap> {
-		     protected Bitmap doInBackground(String... url) {
-					Bitmap bm=null;
-					try {
-				        final URLConnection conn = new URL(url[0]).openConnection();
-				        conn.connect();
-				        final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-				        bm = BitmapFactory.decodeStream(bis);
-				        bis.close();
-				       
-				    } catch (IOException e) {
-				        Log.d("DEBUGTAG", "Oh noooz an error...");
-				    }
-				    return bm;
-		     }
 
+		private class DownloadPicTask extends
+				AsyncTask<String, Integer, Bitmap> {
+			protected Bitmap doInBackground(String... url) {
+				Bitmap bm = null;
+				try {
+					final URLConnection conn = new URL(url[0]).openConnection();
+					conn.connect();
+					final BufferedInputStream bis = new BufferedInputStream(
+							conn.getInputStream());
+					bm = BitmapFactory.decodeStream(bis);
+					bis.close();
 
-		     protected void onPostExecute(Bitmap result) {
-		    	 image.setImageBitmap(result);
-		     }
+				} catch (IOException e) {
+					Log.d("DEBUGTAG", "Oh noooz an error...");
+				}
+				return bm;
+			}
 
+			protected void onPostExecute(Bitmap result) {
+				image.setImageBitmap(result);
+			}
 
-		 }
-
-
+		}
 
 	}
-
 
 }

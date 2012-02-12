@@ -22,8 +22,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +37,14 @@ public class WelcomeActivity extends FragmentActivity {
 	private static SharedPreferences settings;
 	private SharedPreferences.Editor editor;
 	private DataBaseHelper myDbHelper;
-
 	private LocationManager locationManager;
 	private MyGPSLocationListener locationGpsListener;
 	private MyNetworkLocationListener locationNetworkListener;
 	private Location lastLocation;
 
+	int locationProvider = 0;
+	// 1=wifi 2=gps
+	ImageView ivDot;
 	TextView tvLocation;
 	TextView tvAccuraty;
 
@@ -89,6 +93,7 @@ public class WelcomeActivity extends FragmentActivity {
 
 		tvLocation = (TextView) findViewById(R.id.tv_position);
 		tvAccuraty = (TextView) findViewById(R.id.tv_accuracy);
+		ivDot = (ImageView) findViewById(R.id.ivDot);
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationGpsListener = new MyGPSLocationListener();
@@ -135,13 +140,14 @@ public class WelcomeActivity extends FragmentActivity {
 
 		lastLocation = l;
 		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
+		Log.i("", "++++" + lastLocation.getLatitude()+" - " + lastLocation.getLongitude());
 		try {
 			addresses = geocoder.getFromLocation(lastLocation.getLatitude(),
 					lastLocation.getLongitude(), 1);
 			handler.sendEmptyMessage(0);
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			handler.sendEmptyMessage(1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -152,6 +158,9 @@ public class WelcomeActivity extends FragmentActivity {
 	private Handler handler = new Handler() {
 
 		public void handleMessage(android.os.Message msg) {
+			
+			// ivDot.setBackgroundResource(R.drawable.dot);
+			// Location String returned from Google API
 			if (msg.what == 0) {
 
 				tvLocation.setText(addresses.get(0).getAddressLine(0) + ", "
@@ -160,14 +169,22 @@ public class WelcomeActivity extends FragmentActivity {
 						+ "m)");
 
 			}
+			// No answer from Google API, so I guess there are no Internet.
 			if (msg.what == 1) {
 				String masque = new String("#0.##");
 				DecimalFormat form = new DecimalFormat(masque);
 				tvLocation.setText(form.format(lastLocation.getLatitude())
-						+ ";" + form.format(lastLocation.getLongitude()) + " @"
-						+ lastLocation.getAccuracy() + "m");
-				tvAccuraty.setText("(No Internet)");
+						+ " ; " + form.format(lastLocation.getLongitude()));
+				tvAccuraty.setText("("+lastLocation.getAccuracy() + "m)");
 
+			}
+			switch (locationProvider) {
+			case 1:
+				ivDot.setBackgroundResource(R.drawable.dotorange);
+				break;
+			case 2:
+				ivDot.setBackgroundResource(R.drawable.dot);
+				break;
 			}
 
 		};
@@ -233,9 +250,10 @@ public class WelcomeActivity extends FragmentActivity {
 		profile2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				Intent profileIntent = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("http://twitter.com/QKaiser"));
-				startActivity(profileIntent);			}
+				Intent profileIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://twitter.com/QKaiser"));
+				startActivity(profileIntent);
+			}
 		});
 
 		LinearLayout profile3 = (LinearLayout) dialog
@@ -243,8 +261,8 @@ public class WelcomeActivity extends FragmentActivity {
 		profile3.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				Intent profileIntent = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("https://plus.google.com/117418174673875366560"));
+				Intent profileIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("https://plus.google.com/117418174673875366560"));
 				startActivity(profileIntent);
 			}
 		});
@@ -272,7 +290,7 @@ public class WelcomeActivity extends FragmentActivity {
 	{
 
 		public void onLocationChanged(final Location loc) {
-
+			locationProvider = 2;
 			if (loc != null && lastLocation != null) {
 				// Toast.makeText(getBaseContext(), "GPS: "+loc.getAccuracy(),
 				// Toast.LENGTH_LONG).show();
@@ -310,7 +328,7 @@ public class WelcomeActivity extends FragmentActivity {
 	{
 
 		public void onLocationChanged(final Location loc) {
-
+			locationProvider = 1;
 			if (loc != null && lastLocation != null && locationManager != null) {
 				// Toast.makeText(getBaseContext(),
 				// "Network: "+loc.getAccuracy(), Toast.LENGTH_LONG).show();

@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-    <include layout="@layout/colorstrip" />
-      
-     <view class="com.google.android.maps.MapView" 
-            android:id="@+id/myGmap" 
-          android:layout_width="fill_parent" 
-          android:layout_height="fill_parent"
-              android:enabled="true"
- 	android:clickable="true"
-    android:apiKey="@string/api_key_prod" />
-    
-    
+    android:orientation="vertical" >
 
-    
+    <include layout="@layout/colorstrip" />
+
+    <view
+        android:id="@+id/myGmap"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="0K7Fau7cA-pYJQs_ettKSeY36klggcJ9isiC4pA"
+        class="com.google.android.maps.MapView"
+        android:clickable="true"
+        android:enabled="true" />
+
+    <!--
+Prod: 0K7Fau7cA-pYJQs_ettKSeY36klggcJ9isiC4pA
+Debug: 0K7Fau7cA-pYqOftHPiE2Z-kL15R-uk8aH2036g
+    -->
+
 </LinearLayout>

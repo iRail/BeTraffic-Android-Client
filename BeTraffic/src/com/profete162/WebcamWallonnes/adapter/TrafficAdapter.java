@@ -1,6 +1,6 @@
 package com.profete162.WebcamWallonnes.adapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,16 +11,15 @@ import android.widget.TextView;
 
 import com.profete162.WebcamWallonnes.R;
 import com.profete162.WebcamWallonnes.TrafficActivity.Traffic;
-import com.profete162.WebcamWallonnes.misc.Snippets;
 
 
 public class TrafficAdapter extends ArrayAdapter<Traffic>{
 
 	private LayoutInflater myLayoutInflater;
-	protected ArrayList<Traffic> items;
+	protected List<Traffic> items;
 	double currentLat; double currentLon;
 	
-	public TrafficAdapter(Context context, int textViewResourceId,ArrayList<Traffic> list,LayoutInflater layoutInflater,double currentLat, double currentLon) {
+	public TrafficAdapter(Context context, int textViewResourceId,List<Traffic> list,LayoutInflater layoutInflater,double currentLat, double currentLon) {
 		super(context, textViewResourceId, list);
 		this.myLayoutInflater = layoutInflater;
 		this.items = list;
@@ -41,14 +40,13 @@ public class TrafficAdapter extends ArrayAdapter<Traffic>{
 		}
 
 		TextView tMax = (TextView) row.findViewById(R.id.tname);
-		tMax.setText(items.get(position).getName());
+		tMax.setText(items.get(position).getLocation());
 		
 		TextView tMin = (TextView) row.findViewById(R.id.tsource);
 		tMin.setText(items.get(position).getSource());
 		
 		TextView tDis = (TextView) row.findViewById(R.id.tdist);
-		int iDistance = (int) Snippets.getDistance(currentLat,currentLon,items.get(position).getLat(),items.get(position).getLon())/100;
-		tDis.setText((double) iDistance / 10 + "km");
+		tDis.setText(items.get(position).getDistance() + "km");
 
 		
 

@@ -24,7 +24,7 @@ public class RadarLocationAdapter extends AbstractAdapter<Radar> {
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) super.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.row_closest, null);
+			v = vi.inflate(R.layout.row_radar, null);
 		}
 		Radar station = items.get(position);
 		if (station != null) {
@@ -33,8 +33,8 @@ public class RadarLocationAdapter extends AbstractAdapter<Radar> {
 			TextView tvDistance = (TextView) v.findViewById(R.id.tv_dis);
 			// ImageView ivExpress = (ImageView) v.findViewById(R.id.ivExpress);
 
-			tvName.setText(station.getStation());
-			tvGps.setText(station.getAdress());
+			tvName.setText(station.getRadar());
+			tvGps.setText(""+station.getSpeedLimit());
 
 			int iDistance = (int) (Double.valueOf(station.getDistance()) / 100);
 			tvDistance.setText((double) iDistance / 10 + "km");

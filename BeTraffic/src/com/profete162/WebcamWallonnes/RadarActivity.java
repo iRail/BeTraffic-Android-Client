@@ -118,7 +118,7 @@ public class RadarActivity extends FragmentActivity {
 					}
 				});
 				AlertDialog alert = builder.create();
-				alert.show();
+				//alert.show();
 
 			} catch (Exception e) {
 
@@ -159,6 +159,7 @@ public class RadarActivity extends FragmentActivity {
 				compareStationsListToMyLocation(locationCursor, i, lat, lon);
 			}
 			Collections.sort(radarList);
+			
 			Looper.prepare();
 			RadarLocationAdapter locationAdapter = new RadarLocationAdapter(
 					getActivity(), R.layout.row_closest, radarList);
@@ -186,13 +187,13 @@ public class RadarActivity extends FragmentActivity {
 			double iLon = locationCursor.getDouble(locationCursor
 					.getColumnIndex("lon"));
 
-			String sAdress = locationCursor.getString(locationCursor
-					.getColumnIndex("name"));
+			int speedLimit = locationCursor.getInt(locationCursor
+					.getColumnIndex("speedLimit"));
 
 			double dDis = Snippets.getDistance(lat, lon, iLat, iLon);
 
 			radarList
-					.add(new Radar(strName, iLat, iLon, dDis + "", sAdress, 0,
+					.add(new Radar(strName, iLat, iLon, dDis + "", speedLimit, 0,
 							locationCursor.getInt(locationCursor
 									.getColumnIndex("id"))));
 		}

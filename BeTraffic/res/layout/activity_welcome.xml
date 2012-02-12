@@ -16,14 +16,16 @@
         android:gravity="center"
         android:orientation="horizontal" >
 
-        <View
+        <ImageView
+             android:id="@+id/ivDot"
             android:layout_width="9dip"
             android:layout_height="9dip"
-            android:background="@drawable/dot" />
+            android:background="@drawable/dotred" />
 
         <TextView
             android:id="@+id/tv_position"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
@@ -39,7 +41,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="10dip"
+            android:paddingLeft="5dip"
             android:text=""
             android:textColor="#FF000000" >
         </TextView>

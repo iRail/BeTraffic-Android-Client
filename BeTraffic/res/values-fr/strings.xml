@@ -6,7 +6,5 @@
     <string name="txt_connection">Vérifiez votre connexion à Internet.</string>
     <string name="txt_location">Si ce processus prend trop de temps, vous pouvez
 		activer les options de localisation en cliquant ici:</string>
-    <string name="api_key_prod">0K7Fau7cA-pYJQs_ettKSeY36klggcJ9isiC4pA</string>
-    <string name="api_key_debug">0K7Fau7cA-pYqOftHPiE2Z-kL15R-uk8aH2036g</string>
 
 </resources>

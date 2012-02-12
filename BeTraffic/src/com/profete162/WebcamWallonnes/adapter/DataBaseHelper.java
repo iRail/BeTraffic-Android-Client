@@ -244,13 +244,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			double iLon = cursor.getDouble(cursor
 					.getColumnIndex("lon"));
 
-			String sAdress = cursor.getString(cursor
+			int speedLimit = cursor.getInt(cursor
 					.getColumnIndex("speedLimit"));
 
 			double dDis = distance(loc.getLatitude(), loc.getLongitude(), iLat, iLon);
 
 			radarList.add(new Radar(strName, iLat, iLon, dDis + "",
-					sAdress, 0, cursor.getInt(cursor
+					speedLimit, 0, cursor.getInt(cursor
 							.getColumnIndex("id"))));
 		}
 		Collections.sort(radarList);

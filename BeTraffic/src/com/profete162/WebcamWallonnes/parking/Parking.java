@@ -1,7 +1,6 @@
 package com.profete162.WebcamWallonnes.parking;
 
-@SuppressWarnings("unchecked")
-public class Parking implements Comparable  {
+public class Parking implements Comparable<Object>  {
 
 	private String station;
 	private double lat;
