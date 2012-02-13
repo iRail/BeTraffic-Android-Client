@@ -29,8 +29,9 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_adress"
+        android:id="@+id/tv_speedlimit"
         android:gravity="center"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:background="@drawable/circlepannel"

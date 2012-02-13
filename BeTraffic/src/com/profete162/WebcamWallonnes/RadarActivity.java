@@ -2,10 +2,8 @@ package com.profete162.WebcamWallonnes;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
@@ -16,8 +14,6 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
 
 import com.profete162.WebcamWallonnes.adapter.DataBaseHelper;
 import com.profete162.WebcamWallonnes.adapter.RadarLocationAdapter;
@@ -30,7 +26,7 @@ public class RadarActivity extends FragmentActivity {
 
 	private static final String TAG = "BETRAINS";
 
-	private static Radar clickedItem;
+	//private static Radar clickedItem;
 	private static RadarLocationAdapter myRadarAdapter;
 
 	static FragmentActivity fa;
@@ -44,7 +40,7 @@ public class RadarActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_generic);
+		setContentView(R.layout.activity_radar);
 
 		getSupportActionBar().setNavigationMode(
 				ActionBar.NAVIGATION_MODE_STANDARD);
@@ -93,7 +89,7 @@ public class RadarActivity extends FragmentActivity {
 
 			myDbHelper.close();
 		}
-
+		/*
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
 			super.onListItemClick(l, v, position, id);
@@ -125,7 +121,7 @@ public class RadarActivity extends FragmentActivity {
 			}
 
 		}
-
+*/
 		private void updateListToLocation() {
 			Runnable updateListRunnable = new Runnable() {
 				public void run() {
@@ -146,28 +142,20 @@ public class RadarActivity extends FragmentActivity {
 		private void updateListToLocationThread(double lat, double lon) {
 
 			myDbHelper.openDataBase(DataBaseHelper.DB_NAME_RADAR);
-			Cursor locationCursor = myDbHelper.fetchAllRadar();
+			//Cursor locationCursor = myDbHelper.fetchAllRadar();
+			List<Radar> radarList = myDbHelper.fetchAllRadarCloseTo(lat,lon);
+			
 			Log.i(TAG, "size in updateListToLocationThread: "
-					+ locationCursor.getCount());
-
-			radarList.clear();
-
-			for (int i = 0; i < locationCursor.getCount(); i++) {
-				if (thread.isInterrupted()) {
-					break;
-				}
-				compareStationsListToMyLocation(locationCursor, i, lat, lon);
-			}
-			Collections.sort(radarList);
+					+ radarList.size());
 			
 			Looper.prepare();
 			RadarLocationAdapter locationAdapter = new RadarLocationAdapter(
-					getActivity(), R.layout.row_closest, radarList);
+					getActivity(), R.layout.row_closest,radarList);
 			myRadarAdapter = locationAdapter;
 			getActivity().runOnUiThread(new Runnable() {
 				public void run() {
 					lf.setListAdapter(myRadarAdapter);
-					getSupportActivity().getSupportActionBar().setTitle("OK");
+					getSupportActivity().getSupportActionBar().setTitle(getString(R.string.app_name));
 				}
 			});
 

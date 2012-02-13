@@ -5,4 +5,5 @@
     <string name="lan">nl</string>
     <string name="txt_connection">Gelieve uw internetverbinding te controleren...</string>
     <string name="txt_location">GPS parameters</string>
+     <string name="zoom"> Zoom on the event to display it</string>
 </resources>

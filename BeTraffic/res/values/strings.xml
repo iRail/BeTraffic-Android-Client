@@ -6,5 +6,6 @@
     <string name="txt_location">If you cannot get GPS position, please enable it by
 		clicking here.</string>
     <string name="lan">fr</string>
+    <string name="zoom"> Zoom on the event to display it</string>
 
 </resources>

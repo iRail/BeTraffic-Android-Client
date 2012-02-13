@@ -82,11 +82,11 @@ public class TrafficFragment extends ListFragment {
 			return "FAIL";
 		}
 
-		return "OK";
+		return getString(R.string.app_name);
 
 	}
 
-	public InputStream getJSONData(String url) {
+	public static InputStream getJSONData(String url) {
 		HttpClient httpClient = new DefaultHttpClient();
 		httpClient.getParams().setParameter("http.useragent",
 				" Appli de Waza_be " + System.getProperty("http.agent"));

@@ -140,8 +140,9 @@ public class WelcomeActivity extends FragmentActivity {
 
 		lastLocation = l;
 		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-		Log.i("", "++++" + lastLocation.getLatitude()+" - " + lastLocation.getLongitude());
+		
 		try {
+			Log.i("", "++++" + lastLocation.getLatitude()+" - " + lastLocation.getLongitude());
 			addresses = geocoder.getFromLocation(lastLocation.getLatitude(),
 					lastLocation.getLongitude(), 1);
 			handler.sendEmptyMessage(0);

@@ -6,5 +6,5 @@
     <string name="txt_connection">Vérifiez votre connexion à Internet.</string>
     <string name="txt_location">Si ce processus prend trop de temps, vous pouvez
 		activer les options de localisation en cliquant ici:</string>
-
+ <string name="zoom">Zoomez plus sur l\'évènement pour l\'afficher.</string>
 </resources>

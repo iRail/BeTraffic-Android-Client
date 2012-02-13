@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -43,29 +44,32 @@ public class CamerasActivity extends FragmentActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		ActionBar.Tab tab1 = getSupportActionBar().newTab().setText("Alphabet");
 		ActionBar.Tab tab2 = getSupportActionBar().newTab().setText("Régions");
-		ActionBar.Tab tab3 = getSupportActionBar().newTab().setText("Distance");
+		// TODO ActionBar.Tab tab3 =
+		// getSupportActionBar().newTab().setText("Distance");
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mTabsAdapter = new TabsAdapter(this, getSupportActionBar(), mViewPager);
-		mTabsAdapter.addTab(tab1, SortAlphabet.AppListFragment.class,0);
-		mTabsAdapter.addTab(tab2, SortGroup.AppListFragment.class,0);
-		mTabsAdapter.addTab(tab3, CamerasActivity.DistanceListFragment.class,0);
+		mTabsAdapter.addTab(tab1, SortAlphabet.AppListFragment.class, 0);
+		mTabsAdapter.addTab(tab2, SortGroup.AppListFragment.class, 0);
+		// TODO mTabsAdapter.addTab(tab3,
+		// CamerasActivity.DistanceListFragment.class,0);
 
 		if (savedInstanceState != null) {
 			getSupportActionBar().setSelectedNavigationItem(
 					savedInstanceState.getInt("index"));
 		}
-		
+
 		GPS = Snippets.getLocationFromBundle(this.getIntent().getExtras());
 	}
-	public static class DistanceListFragment extends ListFragment  {
-		String url="";
-		ImageView image=null;
-		
+
+	public static class DistanceListFragment extends ListFragment {
+		String url = "";
+		ImageView image = null;
+
 		static Cursor webcamCursor;
 		static DataBaseHelper mDbHelper;
 		static SortAlphabet mContext;
-		
+
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
@@ -134,44 +138,42 @@ public class CamerasActivity extends FragmentActivity {
 					.getColumnIndex("_id")));
 			dialog.setTitle(webcamCursor.getString(webcamCursor
 					.getColumnIndex("City")));
-			
+
 			image = (ImageView) dialog.findViewById(R.id.image);
 			image.setImageResource(R.drawable.icon);
-			
-			 new DownloadPicTask().execute(Snippets.getUrlFromCat(picId, cat));
 
+			new DownloadPicTask().execute(Snippets.getUrlFromCat(picId, cat));
 
+			dialog.getWindow().getAttributes().width = LayoutParams.FILL_PARENT;
+			dialog.getWindow().getAttributes().height = LayoutParams.FILL_PARENT;
 			dialog.show();
 		}
-		
-		 private class DownloadPicTask extends AsyncTask<String, Integer, Bitmap> {
-		     protected Bitmap doInBackground(String... url) {
-					Bitmap bm=null;
-					try {
-				        final URLConnection conn = new URL(url[0]).openConnection();
-				        conn.connect();
-				        final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-				        bm = BitmapFactory.decodeStream(bis);
-				        bis.close();
-				       
-				    } catch (IOException e) {
-				        Log.d("DEBUGTAG", "Oh noooz an error...");
-				    }
-				    return bm;
-		     }
 
+		public class DownloadPicTask extends AsyncTask<String, Integer, Bitmap> {
+			protected Bitmap doInBackground(String... url) {
+				Bitmap bm = null;
+				try {
+					final URLConnection conn = new URL(url[0]).openConnection();
+					conn.connect();
+					final BufferedInputStream bis = new BufferedInputStream(
+							conn.getInputStream());
+					bm = BitmapFactory.decodeStream(bis);
+					bis.close();
 
-		     protected void onPostExecute(Bitmap result) {
-		    	 image.setImageBitmap(result);
-		     }
+				} catch (IOException e) {
+					Log.d("DEBUGTAG", "Oh noooz an error...");
+				}
+				return bm;
+			}
 
+			protected void onPostExecute(Bitmap result) {
+				image.setImageBitmap(result);
+			}
 
-		 }
-
+		}
 
 
 	}
-
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -179,6 +181,7 @@ public class CamerasActivity extends FragmentActivity {
 		outState.putInt("index", getSupportActionBar()
 				.getSelectedNavigationIndex());
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -194,7 +197,7 @@ public class CamerasActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 
 	}
-	
+
 	public class ImageDisplayer implements Runnable {
 		public ImageView view;
 		public Bitmap bmp;

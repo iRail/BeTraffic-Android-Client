@@ -256,10 +256,40 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		Collections.sort(radarList);
 		
 		return radarList;
+	
+	}
+	
+	public List<Radar> fetchAllRadarCloseTo(double lat,double lng) {
 
-
-
+		Cursor cursor = myDataBase.query("radars", new String[] { "id", "name", "lat",
+				"lon", "speedLimit" }, null, null, null, null, null);
 		
+		ArrayList<Radar> radarList = new ArrayList<Radar>();
+
+		for (cursor.moveToFirst(); cursor.moveToNext(); cursor
+				.isAfterLast()) {
+			String strName = cursor.getString(cursor
+					.getColumnIndex("name"));
+			// m_ProgressDialog.incrementProgressBy(1);
+			double iLat = cursor.getDouble(cursor
+					.getColumnIndex("lat"));
+
+			double iLon = cursor.getDouble(cursor
+					.getColumnIndex("lon"));
+
+			int speedLimit = cursor.getInt(cursor
+					.getColumnIndex("speedLimit"));
+
+			double dDis = distance(lat, lng, iLat, iLon);
+
+			radarList.add(new Radar(strName, iLat, iLon, dDis + "",
+					speedLimit, 0, cursor.getInt(cursor
+							.getColumnIndex("id"))));
+		}
+		Collections.sort(radarList);
+		
+		return radarList.subList(0, 50);
+	
 	}
 
 	public Cursor fetchAllParking() {
