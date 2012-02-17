@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="CustomTheme" parent="Theme.Sherlock.Light">
-		<item name="android:windowNoTitle">true</item>
-		<item name="android:textColor">@color/darkblue</item>
-	</style>
 
-	<style name="HomeButton">
-		<item name="android:layout_gravity">center_vertical</item>
-		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_weight">1</item>
-		<item name="android:gravity">center_horizontal</item>
-		<item name="android:textSize">18sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@color/darkblue</item>
-		<item name="android:background">@null</item>
-	</style>
+    <style name="CustomTheme" parent="Theme.Sherlock.Light">
+        <item name="android:textColor">@color/darkblue</item>
+    </style>
+
+    <style name="HomeButton">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/darkblue</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="StyledIndicators" parent="@style/CustomTheme">
+        <item name="vpiTitlePageIndicatorStyle">@style/CustomTitlePageIndicator</item>
+    </style>
+
+    <style name="CustomTitlePageIndicator">
+        <item name="footerColor">@color/action_bar_tint</item>
+        <item name="footerLineHeight">2dp</item>
+        <item name="textColor">#FF999999</item>
+        <item name="selectedColor">@color/darkblue</item>
+        <item name="selectedBold">true</item>
+        <item name="footerColor">@color/darkblue</item>
+    </style>
 
 </resources>

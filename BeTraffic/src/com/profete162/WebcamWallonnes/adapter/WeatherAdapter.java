@@ -49,7 +49,7 @@ public class WeatherAdapter extends ArrayAdapter<Weather>{
 		ImageView icon= (ImageView) row.findViewById(R.id.icon);
 		System.out.println(items.get(position).getCode());
 		System.out.println(WeatherActivity.codeLink.get(items.get(position).getCode()));
-		
+
 		icon.setImageResource(WeatherActivity.codeLink.get(items.get(position).getCode()));
 		
 		 return row;

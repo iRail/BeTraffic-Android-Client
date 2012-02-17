@@ -10,13 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.profete162.WebcamWallonnes.Twitter.TwitterSettingsActivity;
-import com.profete162.WebcamWallonnes.adapter.TabsAdapter;
 
 public class TwitterActivity extends FragmentActivity {
 	// http://search.twitter.com/search.json?q=BETRAINS%20OR%20SNCB%20OR%20NMBS
 	ViewPager mViewPager;
-	TabsAdapter mTabsAdapter;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

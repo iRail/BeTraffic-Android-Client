@@ -19,38 +19,43 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.ViewGroup.LayoutParams;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.profete162.WebcamWallonnes.adapter.DataBaseHelper;
-import com.profete162.WebcamWallonnes.adapter.TabsAdapter;
 import com.profete162.WebcamWallonnes.misc.Snippets;
+import com.viewpagerindicator.TitlePageIndicator;
 
 public class CamerasActivity extends FragmentActivity {
 	/** Called when the activity is first created. */
 	ViewPager mViewPager;
-	TabsAdapter mTabsAdapter;
 	static double GPS[];
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_generic);
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		setContentView(R.layout.activity_camera);
+		//getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		ActionBar.Tab tab1 = getSupportActionBar().newTab().setText("Alphabet");
-		ActionBar.Tab tab2 = getSupportActionBar().newTab().setText("Régions");
+		//ActionBar.Tab tab1 = getSupportActionBar().newTab().setText("Alphabet");
+		//ActionBar.Tab tab2 = getSupportActionBar().newTab().setText("Régions");
 		// TODO ActionBar.Tab tab3 =
 		// getSupportActionBar().newTab().setText("Distance");
 
+		ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+
+		MenuAdapter adapter = new MenuAdapter(this.getSupportFragmentManager(),this);
+		mPager.setAdapter(adapter);
+
+		TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.indicator);
+		indicator.setViewPager(mPager);
+		
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mTabsAdapter = new TabsAdapter(this, getSupportActionBar(), mViewPager);
-		mTabsAdapter.addTab(tab1, SortAlphabet.AppListFragment.class, 0);
-		mTabsAdapter.addTab(tab2, SortGroup.AppListFragment.class, 0);
+		
 		// TODO mTabsAdapter.addTab(tab3,
 		// CamerasActivity.DistanceListFragment.class,0);
 

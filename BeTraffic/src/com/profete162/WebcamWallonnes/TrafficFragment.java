@@ -34,17 +34,18 @@ public class TrafficFragment extends ListFragment {
 
 			public void run() {
 				final String parsed = parseTraffic();
-
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						getSupportActivity().getSupportActionBar().setTitle(
-								parsed);
-						setListAdapter(new TrafficAdapter(getActivity(),
-								R.layout.row_traffic, obj.getTraffics()
-										.getItems(), getActivity()
-										.getLayoutInflater(), GPS[0], GPS[1]));
-					}
-				});
+				if (getActivity() != null)
+					getActivity().runOnUiThread(new Runnable() {
+						public void run() {
+							getSupportActivity().getSupportActionBar()
+									.setTitle(parsed);
+							setListAdapter(new TrafficAdapter(getActivity(),
+									R.layout.row_traffic, obj.getTraffics()
+											.getItems(), getActivity()
+											.getLayoutInflater(), GPS[0],
+									GPS[1]));
+						}
+					});
 
 			}
 		};
@@ -81,8 +82,9 @@ public class TrafficFragment extends ListFragment {
 			e.printStackTrace();
 			return "FAIL";
 		}
-
-		return getString(R.string.app_name);
+		if (getActivity() != null)
+			return getString(R.string.app_name);
+		return "";
 
 	}
 

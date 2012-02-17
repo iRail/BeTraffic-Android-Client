@@ -212,10 +212,6 @@ public class WelcomeActivity extends FragmentActivity {
 		putBundle(i);
 	}
 
-	public void onParkingClick(View v) {
-		Intent i = new Intent(this, ParkingActivity.class);
-		putBundle(i);
-	}
 
 	public void onTwitClick(View v) {
 		Intent i = new Intent(this, TwitterActivity.class);

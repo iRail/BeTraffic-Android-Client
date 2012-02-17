@@ -6,6 +6,11 @@
     <string name="txt_location">If you cannot get GPS position, please enable it by
 		clicking here.</string>
     <string name="lan">fr</string>
-    <string name="zoom"> Zoom on the event to display it</string>
-
+    <string name="zoom">Zoom on the event to display it</string>
+    
+    <string name="svTitle">StreetView not installed</string>
+    <string name="svMessage">Please install Google StreetView to have a look at the radar</string>
+    <string name="noMarket">Sorry, cannot detect Android Market</string>
+    <string name="alphabet">Alphabet</string>
+    <string name="region">Régions</string>
 </resources>

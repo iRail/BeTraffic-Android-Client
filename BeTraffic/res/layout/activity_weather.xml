@@ -9,9 +9,9 @@
     <include layout="@layout/colorstrip" />
 
     <fragment
-        android:id="@+id/radarFragment"
+        android:id="@+id/weatherFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.profete162.WebcamWallonnes.RadarFragment" />
+        class="com.profete162.WebcamWallonnes.WeatherFragment" />
 
 </LinearLayout>

@@ -1,36 +1,20 @@
 package com.profete162.WebcamWallonnes;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.os.StrictMode.ThreadPolicy;
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.MenuItem;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 import com.profete162.WebcamWallonnes.Weather.Weather;
-import com.profete162.WebcamWallonnes.adapter.TabsAdapter;
-import com.profete162.WebcamWallonnes.adapter.WeatherAdapter;
 import com.profete162.WebcamWallonnes.misc.Snippets;
 
 public class WeatherActivity extends FragmentActivity {
 	Boolean tabsSet = false;
 	ViewPager mViewPager;
-	TabsAdapter mTabsAdapter;
-	
+
 	static ArrayList<Weather> list=new ArrayList<Weather>();
 	static double GPS[];
 	public static HashMap<Integer, Integer> codeLink = new HashMap<Integer, Integer>();
@@ -40,26 +24,19 @@ public class WeatherActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_generic);
-
+		setContentView(R.layout.activity_weather);
 		getSupportActionBar().setNavigationMode(
 				ActionBar.NAVIGATION_MODE_STANDARD);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle("Loading...");
-
-		fa = this;
-		GPS = Snippets.getLocationFromBundle(this.getIntent().getExtras());
-
+		WeatherFragment fragment = (WeatherFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.weatherFragment);
 		setCodeLink();
-		
-		setWeatherTabs();
+		fragment.GPS = Snippets.getLocationFromBundle(this.getIntent().getExtras());
+
 
 	}
 	
-	public void setWeatherTabs() {
-		new SetWeatherTabs().execute();
-	}
-
 	public void setCodeLink() {
 		codeLink.put(395, R.drawable.w12);
 		codeLink.put(392, R.drawable.w16);
@@ -111,134 +88,6 @@ public class WeatherActivity extends FragmentActivity {
 		codeLink.put(113, R.drawable.w01);
 
 	}
+
 	
-	public class SetWeatherTabs extends AsyncTask<String, Void, Void> {
-
-		private String parsed;
-
-		protected void onPreExecute() {
-		}
-
-		protected Void doInBackground(String... urls) {
-			parsed = parseWeather();
-			return null;
-		}
-
-		protected void onPostExecute(Void unused) {
-			getSupportActionBar().setTitle(parsed);
-
-			ActionBar.Tab tab0 = getSupportActionBar().newTab().setText(parsed);
-
-			mViewPager = (ViewPager) findViewById(R.id.pager);
-
-			mTabsAdapter = new TabsAdapter(fa, getSupportActionBar(),
-					mViewPager);
-
-			mTabsAdapter.addTab(tab0, WeatherActivity.WeeklyWeatherFragment.class, 0);
-
-		}
-
-	}
-
-
-	public static String parseWeather() {
-		JSONObject dataObject = null;
-		try {
-			if (android.os.Build.VERSION.SDK_INT >= 11) {
-				ThreadPolicy tp = ThreadPolicy.LAX;
-				StrictMode.setThreadPolicy(tp);
-
-			}
-			URL url;
-			url = new URL(
-					"http://free.worldweatheronline.com/feed/weather.ashx?q="
-							+ GPS[0]
-							+ ","
-							+ GPS[1]
-							+ "&key=1df836d286132805111508&num_of_days=5&includeLocation=yes&format=json");
-			System.out.println("URL = " + url);
-			URLConnection tc = url.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(tc
-					.getInputStream()));
-
-			String line;
-			//System.out.println("*********** ICI********");
-
-			while ((line = in.readLine()) != null) {
-				JSONObject jo = new JSONObject(line);
-				dataObject = jo.getJSONObject("data");
-
-				JSONArray weatherArray = dataObject.getJSONArray("weather");
-				
-				list.clear();
-				
-				for (int i = 0; i < weatherArray.length(); i++) {
-					JSONObject weatherObject = (JSONObject) weatherArray.get(i);
-					list.add(new Weather(weatherObject.getJSONArray("weatherDesc").getJSONObject(0).getString("value"),
-							weatherObject.getString("tempMaxC"),
-							weatherObject.getString("tempMinC"),
-							weatherObject.getString("winddir16Point"),
-							weatherObject.getString("windspeedKmph"),
-							weatherObject.getInt("weatherCode")));
-
-				}
-
-			}
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-		}
-		try {
-			return dataObject.getJSONArray("nearest_area").getJSONObject(0).getJSONArray("areaName").getJSONObject(0).getString("value");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			return null;
-		}
-
-	}
-
-	public static void setWeeklyTabs(String result) {
-		
-		fa.getSupportActionBar().setTitle(result);
-
-	}
-
-	public static class WeeklyWeatherFragment extends ListFragment {
-
-		@Override
-		public void onActivityCreated(Bundle savedInstanceState) {
-			super.onActivityCreated(savedInstanceState);
-			setWeeklyTabs(parseWeather());
-			this.setListAdapter(new WeatherAdapter(getActivity(),
-					R.layout.row_weather, list,getActivity().getLayoutInflater()));
-		}
-
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putInt("index", getSupportActionBar()
-				.getSelectedNavigationIndex());
-	}
-
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-
-		case android.R.id.home:
-			finish();
-
-		default:
-			Log.i("", "ID: " + item.getItemId());
-
-		}
-
-		return super.onOptionsItemSelected(item);
-
-	}
 }

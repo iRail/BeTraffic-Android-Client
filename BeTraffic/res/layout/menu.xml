@@ -1,56 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:padding="6dip">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="6dip" >
 
-	<LinearLayout android:orientation="horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="1">
-		<Button android:id="@+id/btn_home_chat" style="@style/HomeButton"
-			android:text="Map" android:drawableTop="@drawable/home_btn_map"
-			android:onClick="onMapClick" />
-		<Button android:id="@+id/btn_home_traffic" style="@style/HomeButton"
-			android:text="Traffic" android:drawableTop="@drawable/home_btn_work"
-			android:onClick="onTrafficClick" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
 
-	</LinearLayout>
+        <Button
+            style="@style/HomeButton"
+            android:drawableTop="@drawable/home_btn_map"
+            android:onClick="onMapClick"
+            android:text="Map" />
 
-	<LinearLayout android:orientation="horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="1">
-		<Button android:id="@+id/btn_twit" style="@style/HomeButton"
-			android:text="Twitter" android:drawableTop="@drawable/home_btn_twit"
-			android:onClick="onTwitClick" />
-		<Button android:id="@+id/btn_home_traffic" style="@style/HomeButton"
-			android:text="Cameras" android:drawableTop="@drawable/home_btn_cam"
-			android:onClick="onCameraClick" />
-	</LinearLayout>
+        <Button
+            style="@style/HomeButton"
+            android:drawableTop="@drawable/home_btn_work"
+            android:onClick="onTrafficClick"
+            android:text="Traffic" />
+    </LinearLayout>
 
-	<LinearLayout android:orientation="horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="1">
-		<Button android:id="@+id/btn_closest_stations" style="@style/HomeButton"
-			android:text="Meteo" android:drawableTop="@drawable/home_btn_weather"
-			android:onClick="onWeatherClick" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
 
-		<Button android:id="@+id/btn_twit" style="@style/HomeButton"
-			android:text="Radar" android:drawableTop="@drawable/home_btn_radar"
-			android:onClick="onRadarClick" />
-	</LinearLayout>
+        <Button
+            style="@style/HomeButton"
+            android:drawableTop="@drawable/home_btn_radar"
+            android:onClick="onRadarClick"
+            android:text="Radar" />
 
+        <Button
+            style="@style/HomeButton"
+            android:drawableTop="@drawable/home_btn_cam"
+            android:onClick="onCameraClick"
+            android:text="Cameras" />
+    </LinearLayout>
 
-	<LinearLayout android:orientation="horizontal"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="1">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
 
-		<Button android:id="@+id/btn_closest_stations" style="@style/HomeButton"
-			android:text="About" android:drawableTop="@drawable/home_btn_default"
-			android:onClick="onAboutClick" />
-	</LinearLayout>
+        <Button
+            style="@style/HomeButton"
+            android:drawableTop="@drawable/home_btn_weather"
+            android:onClick="onWeatherClick"
+            android:text="Meteo" />
 
-
-
-	    
+        <Button
+            style="@style/HomeButton"
+            android:drawableTop="@drawable/home_btn_default"
+            android:onClick="onAboutClick"
+            android:text="About" />
+    </LinearLayout>
 
 </LinearLayout>
