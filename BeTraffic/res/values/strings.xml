@@ -7,10 +7,16 @@
 		clicking here.</string>
     <string name="lan">fr</string>
     <string name="zoom">Zoom on the event to display it</string>
-    
+    <string name="alphabet">Alphabet</string>
+    <string name="region">Area</string>
     <string name="svTitle">StreetView not installed</string>
     <string name="svMessage">Please install Google StreetView to have a look at the radar</string>
     <string name="noMarket">Sorry, cannot detect Android Market</string>
-    <string name="alphabet">Alphabet</string>
-    <string name="region">Régions</string>
+    <string name="menuMap">Map</string>
+    <string name="menuTraffic">Traffic</string>
+    <string name="menuRadar">Radars</string>
+    <string name="menuWeather">Weather</string>
+    <string name="menuCameras">Webcam</string>
+    <string name="menuAbout">About</string>
+
 </resources>

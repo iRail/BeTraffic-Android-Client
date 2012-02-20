@@ -15,13 +15,13 @@
             style="@style/HomeButton"
             android:drawableTop="@drawable/home_btn_map"
             android:onClick="onMapClick"
-            android:text="Map" />
+            android:text="@string/menuMap" />
 
         <Button
             style="@style/HomeButton"
             android:drawableTop="@drawable/home_btn_work"
             android:onClick="onTrafficClick"
-            android:text="Traffic" />
+            android:text="@string/menuTraffic" />
     </LinearLayout>
 
     <LinearLayout
@@ -34,13 +34,13 @@
             style="@style/HomeButton"
             android:drawableTop="@drawable/home_btn_radar"
             android:onClick="onRadarClick"
-            android:text="Radar" />
+            android:text="@string/menuRadar" />
 
         <Button
             style="@style/HomeButton"
             android:drawableTop="@drawable/home_btn_cam"
             android:onClick="onCameraClick"
-            android:text="Cameras" />
+            android:text="@string/menuCameras" />
     </LinearLayout>
 
     <LinearLayout
@@ -53,13 +53,13 @@
             style="@style/HomeButton"
             android:drawableTop="@drawable/home_btn_weather"
             android:onClick="onWeatherClick"
-            android:text="Meteo" />
+            android:text="@string/menuWeather" />
 
         <Button
             style="@style/HomeButton"
             android:drawableTop="@drawable/home_btn_default"
             android:onClick="onAboutClick"
-            android:text="About" />
+            android:text="@string/menuAbout" />
     </LinearLayout>
 
 </LinearLayout>

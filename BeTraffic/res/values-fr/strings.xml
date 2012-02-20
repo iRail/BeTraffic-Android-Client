@@ -2,9 +2,21 @@
 <resources>
 
     <string name="app_name">BeRoutes</string>
-    <string name="lan">fr</string>
     <string name="txt_connection">Vérifiez votre connexion à Internet.</string>
     <string name="txt_location">Si ce processus prend trop de temps, vous pouvez
 		activer les options de localisation en cliquant ici:</string>
- <string name="zoom">Zoomez plus sur l\'évènement pour l\'afficher.</string>
+    <string name="lan">fr</string>
+    <string name="zoom">Zoomez plus sur l\'évènement pour l\'afficher.</string>
+    <string name="alphabet">Alphabet</string>
+    <string name="region">Régions</string>
+    <string name="svTitle">StreetView n\'est pas installé</string>
+    <string name="svMessage">Vous pouvez installer gratuitement Google StreetView pour profiter de cette fonctionnalité</string>
+    <string name="noMarket">Pas d\'Android Market détecté\u2026</string>
+    <string name="menuMap">Carte</string>
+    <string name="menuTraffic">Traffic</string>
+    <string name="menuRadar">Radars</string>
+    <string name="menuWeather">Météo</string>
+    <string name="menuCameras">Caméras</string>
+    <string name="menuAbout">À Propos\u2026</string>
+
 </resources>

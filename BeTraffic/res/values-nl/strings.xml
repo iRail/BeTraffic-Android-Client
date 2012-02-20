@@ -2,8 +2,20 @@
 <resources>
 
     <string name="app_name">BeTraffic</string>
+    <string name="txt_connection">Gelieve uw internetverbinding te controleren\u2026</string>
+    <string name="txt_location">Als dit proces te lang duurt, activeer de locatie opties (GPS) door hier te klikken.</string>
     <string name="lan">nl</string>
-    <string name="txt_connection">Gelieve uw internetverbinding te controleren...</string>
-    <string name="txt_location">GPS parameters</string>
-     <string name="zoom"> Zoom on the event to display it</string>
+    <string name="zoom">Zoom in op het icoontje om die te openen.</string>
+    <string name="alphabet">Alfabetische</string>
+    <string name="region">Regionale</string>
+    <string name="svTitle">StreetView is niet geïnstalleerd.</string>
+    <string name="svMessage">Je mag gratis Google Street View installeren om van deze functionaliteit te genieten.</string>
+    <string name="noMarket">Geen Android Market gevonden\u2026</string>
+    <string name="menuMap">Kaart</string>
+    <string name="menuTraffic">Verkeer</string>
+    <string name="menuRadar">Flitsen</string>
+    <string name="menuWeather">Weerbericht</string>
+    <string name="menuCameras">Camera\'s</string>
+    <string name="menuAbout">In verband met\u2026</string>
+
 </resources>

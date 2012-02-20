@@ -259,7 +259,7 @@ public class WelcomeActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				Intent profileIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("https://plus.google.com/117418174673875366560"));
+						.parse("https://plus.google.com/b/108315424589085456181/108315424589085456181/posts"));
 				startActivity(profileIntent);
 			}
 		});
