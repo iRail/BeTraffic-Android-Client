@@ -9,7 +9,7 @@
     <include layout="@layout/colorstrip" />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/llPosition"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#99ccccdd"
@@ -31,7 +31,7 @@
             android:orientation="horizontal"
             android:paddingLeft="10dip"
             android:singleLine="true"
-            android:text="Acquiring location..."
+            android:text="@string/getLoc"
             android:textColor="#FF000000" >
         </TextView>
 

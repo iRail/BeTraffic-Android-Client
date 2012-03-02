@@ -20,10 +20,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,8 +75,8 @@ public class WelcomeActivity extends FragmentActivity {
 				+ settings.getString("pVersion", "X") + "***");
 		if (!myVersion.equals(settings.getString("pVersion", "X"))) {
 			try {
-				Toast.makeText(this, "Database Updated", Toast.LENGTH_SHORT)
-						.show();
+				// Toast.makeText(this, "Database Updated", Toast.LENGTH_SHORT)
+				// .show();
 				myDbHelper.forceCreateDataBase(this);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -94,6 +96,14 @@ public class WelcomeActivity extends FragmentActivity {
 		tvLocation = (TextView) findViewById(R.id.tv_position);
 		tvAccuraty = (TextView) findViewById(R.id.tv_accuracy);
 		ivDot = (ImageView) findViewById(R.id.ivDot);
+		LinearLayout ll = (LinearLayout) findViewById(R.id.llPosition);
+		ll.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				Intent myIntent = new Intent(
+						Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				startActivity(myIntent);
+			}
+		});
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationGpsListener = new MyGPSLocationListener();
@@ -132,21 +142,25 @@ public class WelcomeActivity extends FragmentActivity {
 
 		List<String> providers = locationManager.getProviders(true);
 		Location l = null;
-		for (int i = providers.size() - 1; i >= 0; i--) {
-			l = locationManager.getLastKnownLocation(providers.get(i));
-			if (l != null)
-				break;
-		}
+		if (lastLocation == null)
+			for (int i = providers.size() - 1; i >= 0; i--) {
+				l = locationManager.getLastKnownLocation(providers.get(i));
+				if (l != null) {
+					lastLocation = l;
+					break;
+				}
 
-		lastLocation = l;
+			}
+
 		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-		
+
 		try {
-			Log.i("", "++++" + lastLocation.getLatitude()+" - " + lastLocation.getLongitude());
+			Log.i("", "++++" + lastLocation.getLatitude() + " - "
+					+ lastLocation.getLongitude());
 			addresses = geocoder.getFromLocation(lastLocation.getLatitude(),
 					lastLocation.getLongitude(), 1);
-			handler.sendEmptyMessage(0);
 
+			handler.sendEmptyMessage(0);
 		} catch (IOException e) {
 			e.printStackTrace();
 			handler.sendEmptyMessage(1);
@@ -159,9 +173,10 @@ public class WelcomeActivity extends FragmentActivity {
 	private Handler handler = new Handler() {
 
 		public void handleMessage(android.os.Message msg) {
-			
+
 			// ivDot.setBackgroundResource(R.drawable.dot);
 			// Location String returned from Google API
+			Log.i("", "'++++" + addresses);
 			if (msg.what == 0) {
 
 				tvLocation.setText(addresses.get(0).getAddressLine(0) + ", "
@@ -176,7 +191,7 @@ public class WelcomeActivity extends FragmentActivity {
 				DecimalFormat form = new DecimalFormat(masque);
 				tvLocation.setText(form.format(lastLocation.getLatitude())
 						+ " ; " + form.format(lastLocation.getLongitude()));
-				tvAccuraty.setText("("+lastLocation.getAccuracy() + "m)");
+				tvAccuraty.setText("(" + lastLocation.getAccuracy() + "m)");
 
 			}
 			switch (locationProvider) {
@@ -211,7 +226,6 @@ public class WelcomeActivity extends FragmentActivity {
 		Intent i = new Intent(this, RadarActivity.class);
 		putBundle(i);
 	}
-
 
 	public void onTwitClick(View v) {
 		Intent i = new Intent(this, TwitterActivity.class);
@@ -259,7 +273,7 @@ public class WelcomeActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				Intent profileIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("https://plus.google.com/b/108315424589085456181/108315424589085456181/posts"));
+						.parse("https://plus.google.com/108315424589085456181"));
 				startActivity(profileIntent);
 			}
 		});
@@ -288,17 +302,18 @@ public class WelcomeActivity extends FragmentActivity {
 
 		public void onLocationChanged(final Location loc) {
 			locationProvider = 2;
-			if (loc != null && lastLocation != null) {
-				// Toast.makeText(getBaseContext(), "GPS: "+loc.getAccuracy(),
+			if (loc != null) {
+				// Toast.makeText(getBaseContext(), "GPS: " + loc.getAccuracy(),
 				// Toast.LENGTH_LONG).show();
 
 				lastLocation = loc;
+				new Thread(new Runnable() {
+					public void run() {
+						displayLocation();
+					}
+				}).start();
 				if (loc.getAccuracy() <= 25) {
-					new Thread(new Runnable() {
-						public void run() {
-							displayLocation();
-						}
-					}).start();
+
 					locationManager.removeUpdates(locationNetworkListener);
 					locationManager.removeUpdates(locationGpsListener);
 				}
@@ -326,11 +341,17 @@ public class WelcomeActivity extends FragmentActivity {
 
 		public void onLocationChanged(final Location loc) {
 			locationProvider = 1;
-			if (loc != null && lastLocation != null && locationManager != null) {
+			if (loc != null && locationManager != null) {
 				// Toast.makeText(getBaseContext(),
-				// "Network: "+loc.getAccuracy(), Toast.LENGTH_LONG).show();
+				// "Network: " + loc.getAccuracy(), Toast.LENGTH_LONG)
+				// .show();
 				locationManager.removeUpdates(locationNetworkListener);
 				lastLocation = loc;
+				new Thread(new Runnable() {
+					public void run() {
+						displayLocation();
+					}
+				}).start();
 			}
 		}
 

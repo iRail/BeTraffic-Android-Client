@@ -18,5 +18,6 @@
     <string name="menuWeather">Weather</string>
     <string name="menuCameras">Webcam</string>
     <string name="menuAbout">About</string>
+    <string name="getLoc">Click here to improve your location.</string>
 
 </resources>

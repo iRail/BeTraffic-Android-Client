@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -58,7 +57,7 @@ public class RadarFragment extends ListFragment {
 		RadarLocationAdapter adapter = (RadarLocationAdapter) l.getAdapter();
 		try {
 			Radar clickedItem = (Radar) adapter.getItem(position);
-			// TODO
+
 			Intent streetIntent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("google.streetview:cbll=" + clickedItem.getLat()
 							+ "," + clickedItem.getLon()));

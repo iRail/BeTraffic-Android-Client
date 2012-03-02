@@ -1,18 +1,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="300dip"
-        android:layout_height="300dip"
-    android:orientation="vertical" 
-    android:background="#FFFFFF">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
 
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tv_speedlimit"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="300dip"
+        android:layout_height="300dip"
         android:background="@drawable/circlepannel"
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textSize="100dip"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_street"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:text="StreetView">
+    </Button>
 
 </LinearLayout>

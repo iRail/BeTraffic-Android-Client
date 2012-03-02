@@ -37,13 +37,19 @@ public class TrafficFragment extends ListFragment {
 				if (getActivity() != null)
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
-							getSupportActivity().getSupportActionBar()
-									.setTitle(parsed);
-							setListAdapter(new TrafficAdapter(getActivity(),
-									R.layout.row_traffic, obj.getTraffics()
-											.getItems(), getActivity()
-											.getLayoutInflater(), GPS[0],
-									GPS[1]));
+							try{
+								getSupportActivity().getSupportActionBar()
+								.setTitle(parsed);
+						setListAdapter(new TrafficAdapter(getActivity(),
+								R.layout.row_traffic, obj.getTraffics()
+										.getItems(), getActivity()
+										.getLayoutInflater(), GPS[0],
+								GPS[1]));	
+							}
+							catch(Exception e){
+								e.printStackTrace();
+							}
+
 						}
 					});
 

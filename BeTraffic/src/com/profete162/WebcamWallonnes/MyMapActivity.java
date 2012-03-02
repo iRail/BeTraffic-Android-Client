@@ -14,18 +14,22 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentMapActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,6 +102,8 @@ public class MyMapActivity extends FragmentMapActivity {
 		mMap.getController().setCenter(gp);
 		mMap.getController().setZoom(8);
 
+		mMap.setTraffic(true);
+
 		// ADD the blue dot with my position
 
 		myLocationOverlay = new CustomizedLocationOverlay(this, mMap);
@@ -112,7 +118,7 @@ public class MyMapActivity extends FragmentMapActivity {
 		}
 
 		@Override
-		protected boolean onTap(int index) {
+		protected boolean onTap(final int index) {
 			if (mMap.getZoomLevel() >= zoom) {
 				Dialog dialog = new Dialog(context);
 				dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -120,6 +126,21 @@ public class MyMapActivity extends FragmentMapActivity {
 				TextView tvSpeed = (TextView) dialog
 						.findViewById(R.id.tv_speedlimit);
 				tvSpeed.setText("" + radarList.get(index).getSpeedLimit());
+				Button btnStreet = (Button) dialog
+						.findViewById(R.id.btn_street);
+				btnStreet.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+
+						Intent streetIntent = new Intent(Intent.ACTION_VIEW,
+								Uri.parse("google.streetview:cbll="
+										+ radarList.get(index).getLat() + ","
+										+ radarList.get(index).getLon()));
+						startActivity(streetIntent);
+					}
+				});
+
 				dialog.show();
 				radarList.get(index).getSpeedLimit();
 			} else
@@ -198,7 +219,7 @@ public class MyMapActivity extends FragmentMapActivity {
 			if (mMap.getZoomLevel() >= zoom) {
 				Dialog dialog = new Dialog(context);
 				dialog.setContentView(R.layout.custom_dialog);
-				camCursor.moveToPosition(index+1);
+				camCursor.moveToPosition(index + 1);
 				int picId = Integer.valueOf(camCursor.getString(camCursor
 						.getColumnIndex("_id")));
 				char cat = camCursor.getString(camCursor.getColumnIndex("Cat"))
@@ -236,11 +257,13 @@ public class MyMapActivity extends FragmentMapActivity {
 				.setIcon(R.drawable.ic_work)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		menu.add(Menu.NONE, 1, Menu.NONE, "radar").setIcon(R.drawable.ic_radar)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		// menu.add(Menu.NONE, 1, Menu.NONE,
+		// "radar").setIcon(R.drawable.ic_radar)
+		// .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		menu.add(Menu.NONE, 2, Menu.NONE, "Camera").setIcon(R.drawable.ic_cam)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		// menu.add(Menu.NONE, 2, Menu.NONE,
+		// "Camera").setIcon(R.drawable.ic_cam)
+		// .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -248,6 +271,7 @@ public class MyMapActivity extends FragmentMapActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case 0:
+			mMap.setTraffic(!mMap.isTraffic());
 			break;
 
 		case 1:
@@ -285,7 +309,6 @@ public class MyMapActivity extends FragmentMapActivity {
 			super(context, mapView);
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void onLocationChanged(final Location loc) {
 			super.onLocationChanged(loc);
@@ -371,7 +394,7 @@ public class MyMapActivity extends FragmentMapActivity {
 									context.runOnUiThread(addAllOverlays);
 								} catch (Exception e) {
 									e.printStackTrace();
-									context.runOnUiThread(addOverlays);
+									context.runOnUiThread(addOfflineOverlays);
 								}
 
 							}
@@ -406,7 +429,7 @@ public class MyMapActivity extends FragmentMapActivity {
 
 		}
 	};
-	private Runnable addOverlays = new Runnable() {
+	private Runnable addOfflineOverlays = new Runnable() {
 		public void run() {
 
 			mMap.getOverlays().add(radarOverlay);
